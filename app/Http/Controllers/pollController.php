@@ -14,11 +14,13 @@ class pollController extends Controller
 
     public function createPoll(Request $request){
         $poll = new Polls;
-        if($user = Auth::user())
-            $id = $user->id;
-        else
-            $id = null; 
-        $data = ['question' => $request->question, 'multivote' => $request->multivote, 'user_id' => null];
+        if($user = Auth::user()){
+            $user_id = $user->id;
+        }else{
+            $user_id = null; 
+        }
+
+        $data = ['question' => $request->question, 'multivote' => $request->multivote, 'user_id' => $user_id];
         $id = $poll->insertGetId($data);
 
         foreach($request->answers as $key => $value)
